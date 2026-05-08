@@ -1,0 +1,86 @@
+﻿@page "/login"
+@using TP2ProgramacionMovil.Models
+
+<PageTitle>Login</PageTitle>
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-5">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Inicio de Sesión</h3>
+                </div>
+
+                <div class="card-body">
+
+                    <EditForm Model="@login" OnValidSubmit="ValidarLogin">
+
+                        <DataAnnotationsValidator />
+
+                        <ValidationSummary />
+
+                        <div class="mb-3">
+                            <label class="form-label">Usuario</label>
+
+                            <InputText class="form-control"
+                                       placeholder="Ingrese su usuario"
+                                       @bind-Value="login.Usuario" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+
+                            <InputText class="form-control"
+                                       type="password"
+                                       placeholder="Ingrese su contraseña"
+                                       @bind-Value="login.Contrasena" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Ingresar
+                        </button>
+
+                    </EditForm>
+
+                    @if (!string.IsNullOrEmpty(mensaje))
+                    {
+                        <div class="alert @claseMensaje mt-3 text-center">
+                            @mensaje
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@code {
+    private LoginModel login = new();
+
+    private string mensaje = string.Empty;
+
+    private string claseMensaje = string.Empty;
+
+    private void ValidarLogin()
+    {
+        if (login.Usuario == "alumno" && login.Contrasena == "1234")
+        {
+            mensaje = "Acceso permitido. Bienvenido al sistema.";
+            claseMensaje = "alert-success";
+        }
+        else
+        {
+            mensaje = "Usuario o contraseña incorrectos. Intente nuevamente.";
+            claseMensaje = "alert-danger";
+        }
+    }
+}
