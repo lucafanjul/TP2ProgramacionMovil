@@ -1,62 +1,72 @@
-﻿@page "/login"
+﻿@page "/"
+@layout LoginLayout
 @using TP2ProgramacionMovil.Models
+@inject NavigationManager navigation
 
 <PageTitle>Login</PageTitle>
 
-<div class="container mt-5">
+<div class="container min-vh-100 d-flex justify-content-center align-items-center">
 
-    <div class="row justify-content-center">
+    <div class="card shadow border-0" style="width: 420px;">
 
-        <div class="col-md-5">
+        <div class="card-body p-4">
 
-            <div class="card shadow">
+            <p class="text-muted mb-1">
+                Ingrese sus datos para acceder
+            </p>
 
-                <div class="card-header bg-primary text-white text-center">
-                    <h3>Inicio de Sesión</h3>
-                </div>
+            <h2 class="mb-4 fw-bold text-center">
+                Iniciar sesión
+            </h2>
 
-                <div class="card-body">
+            <EditForm Model="@login" OnValidSubmit="ValidarLogin">
 
-                    <EditForm Model="@login" OnValidSubmit="ValidarLogin">
+                <DataAnnotationsValidator />
 
-                        <DataAnnotationsValidator />
+                <ValidationSummary />
 
-                        <ValidationSummary />
+                <div class="mb-3">
 
-                        <div class="mb-3">
-                            <label class="form-label">Usuario</label>
+                    <label class="form-label">
+                        Usuario
+                    </label>
 
-                            <InputText class="form-control"
-                                       placeholder="Ingrese su usuario"
-                                       @bind-Value="login.Usuario" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Contraseña</label>
-
-                            <InputText class="form-control"
-                                       type="password"
-                                       placeholder="Ingrese su contraseña"
-                                       @bind-Value="login.Contrasena" />
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100">
-                            Ingresar
-                        </button>
-
-                    </EditForm>
-
-                    @if (!string.IsNullOrEmpty(mensaje))
-                    {
-                        <div class="alert @claseMensaje mt-3 text-center">
-                            @mensaje
-                        </div>
-                    }
+                    <InputText class="form-control"
+                               placeholder="Ingrese su usuario"
+                               @bind-Value="login.Usuario" />
 
                 </div>
 
-            </div>
+                <div class="mb-3">
 
+                    <label class="form-label">
+                        Contraseña
+                    </label>
+
+                    <InputText class="form-control"
+                               type="password"
+                               placeholder="Ingrese su contraseña"
+                               @bind-Value="login.Contrasena" />
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary w-100 mt-2">
+
+                    Ingresar
+
+                </button>
+
+            </EditForm>
+
+            @if (!string.IsNullOrEmpty(mensaje))
+            {
+                <div class="alert @claseMensaje mt-3 text-center">
+
+                    @mensaje
+
+                </div>
+            }
         </div>
 
     </div>
@@ -64,6 +74,7 @@
 </div>
 
 @code {
+
     private LoginModel login = new();
 
     private string mensaje = string.Empty;
@@ -72,15 +83,21 @@
 
     private void ValidarLogin()
     {
-        if (login.Usuario == "alumno" && login.Contrasena == "1234")
+        if (login.Usuario == "alumno" &&
+            login.Contrasena == "1234")
         {
             mensaje = "Acceso permitido. Bienvenido al sistema.";
+
             claseMensaje = "alert-success";
+
+            navigation.NavigateTo("/home");
         }
         else
         {
             mensaje = "Usuario o contraseña incorrectos. Intente nuevamente.";
+
             claseMensaje = "alert-danger";
         }
     }
+
 }
